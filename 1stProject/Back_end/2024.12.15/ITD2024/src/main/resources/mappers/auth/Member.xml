@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itn2024.projectb.mapper.auth.MemberMapper">
+
+    <select id="selectMemberList"
+            parameterType="Criteria"
+            resultType="Member">
+        SELECT *
+        FROM TB_MEMBER
+        WHERE NAME LIKE '%' || #{searchKeyword} || '%'
+           OR PHONE_NUMBER LIKE '%' || #{searchKeyword} || '%'
+           OR NAME LIKE '%' || #{searchKeyword} || '%'
+           OR EMAIL LIKE '%' || #{searchKeyword} || '%'
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+
+    <select id="selectMemberListTotCnt"
+            parameterType="Criteria"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM TB_MEMBER
+        WHERE EMAIL LIKE '%' || #{searchKeyword} || '%'
+    </select>
+
+    <select id="selectMember" parameterType="String" resultType="Member">
+        SELECT *
+        FROM TB_MEMBER
+        WHERE EMAIL = #{email}
+    </select>
+
+    <select id="existsById" parameterType="String" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_MEMBER
+        WHERE EMAIL = #{email}
+    </select>
+
+    <insert id="insert" parameterType="Member">
+        INSERT INTO TB_MEMBER
+        (EMAIL,
+         PASSWORD,
+         NAME,
+         PHONE_NUMBER,
+         CODE_NAME)
+        VALUES (#{email},
+                #{password},
+                #{name},
+                #{phoneNumber},
+                #{codeName})
+    </insert>
+
+    <update id="update" parameterType="Member">
+        UPDATE TB_MEMBER
+        SET PASSWORD=#{password},
+            NAME=#{name},
+            PHONE_NUMBER=#{phoneNumber},
+            CODE_NAME=#{codeName},
+            UPDATE_TIME=TO_CHAR(SYSDATE,'YYYY/MM/DD HH24/MI/SS')
+        WHERE EMAIL = #{email}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM TB_MEMBER WHERE EMAIL=#{email}
+    </delete>
+
+
+</mapper>

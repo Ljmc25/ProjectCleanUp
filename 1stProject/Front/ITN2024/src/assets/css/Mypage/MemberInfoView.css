@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.title{
+    text-align: center;
+    font-size:40px; 
+}
+
+.all{
+    /* border-style: solid; */
+
+    width: 2400px;
+    height: 1200px;
+}
+
+
+
+.left{
+    float : left;    
+    margin-left: 40px;
+    margin-top: 50px;
+
+    width:175px;
+    height: 300px;
+    /* border-style: solid; */
+    text-align: center;
+}
+
+.main{
+    
+    margin-top: 75px;
+    margin-left: 400px;
+
+    width: 600px;
+    height: 400px;
+
+    /* border-style: solid; */
+}
+
+.p1{
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.p{
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.p2{
+    color: rgb(216, 216, 216);
+    
+}
+
+/* 테이블 */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    border: 1px solid #dddddd;
+    border-top: 2px solid;
+    height: auto;
+  }
+
+  .email-cell {
+    background-color: #f4f4f4 !important ;
+    padding-bottom: 10px;
+  }
+  .password-cell {
+    background-color: #f4f4f4 !important; 
+  }
+  .name-cell {
+    background-color: #f4f4f4 !important; 
+  }
+  .phone-cell{
+    background-color :#f4f4f4 !important; 
+    
+}
+  
+.buy-list th:nth-child(1){
+    width: 40px;
+    padding-bottom: 20px;
+    font-weight: 100;
+}
+.buy-list td:nth-child(2){
+    width: 100px;
+    height: 125px;
+    text-align: center;
+    
+}
+
+
+  
+
+
+
+/* 버튼들 */
+.btn{
+    text-align: center;
+    margin-left: 385px;
+    margin-top: 100px;
+}
+
+.upload-btn{
+color: white;
+font-size: large;
+font-weight: 600;
+background-color: black;
+
+width: 300px;
+height: 50px;
+}
+
+.cancle-btn{
+color: black;
+font-size: large;
+font-weight: 600;
+background-color: white;
+
+width: 300px;
+height: 50px;
+}
+
+.hr2{
+    margin: 30px auto;    
+    border: 2px solid;
+}
+
+a {
+    all: unset; /* 모든 기본 스타일 제거 */
+    cursor: pointer; /* 클릭 가능한 상태 유지 */
+    display: inline-block; /* 블록 스타일 유지 */
+}
+a:hover{
+    color: #000;
+}

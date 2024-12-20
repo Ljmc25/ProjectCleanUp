@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itn2024.projectb.mapper.advanced.DeliveryMapper">
+    <select id="selectDeliveryList" parameterType="Criteria" resultType="Delivery">
+        SELECT *
+        FROM TB_DELIVERY
+        WHERE COURIER LIKE '%'|| #{searchKeyword} ||'%'
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS
+            FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+    <select id="selectDeliveryListTotCnt" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*) FROM TB_DELIVERY
+        WHERE COURIER LIKE '%' ||#{searchKeyword}|| '%'
+    </select>
+    <select id="selectDeliveryById" parameterType="String" resultType="Delivery">
+        SELECT *
+        FROM TB_DELIVERY
+        WHERE DEID = #{deid}
+    </select>
+    <select id="selectDeliveryByPayment" parameterType="String" resultType="Delivery">
+        SELECT *
+        FROM TB_DELIVERY
+        WHERE PAID = #{faid}
+    </select>
+    <insert id="insertDelivery" parameterType="Delivery">
+        INSERT INTO TB_DELIVERY(DEID,CODE,EMAIL,ORDER_ADDRESS,ORDER_ZIP_CODE,CONSIGNEE_NAME,CONSIGNEE_PHONE_NUMBER,
+                                CONSIGNEE_ADDRESS,CONSIGNEE_ZIP_CODE,PAID)
+        VALUES (
+                'DE' || LPAD(TO_CHAR(DELIVERY_SEQ.NEXTVAL),5,'0'),'COFK' || LPAD(TO_CHAR(2170+DELIVERY_SEQ.NEXTVAL),5,'0'),
+                #{email},#{orderAddress},#{orderZipCode},#{consigneeName},#{consigneePhoneNumber},#{consigneeAddress},
+                #{consigneeZipCode},#{faid}
+        );
+    </insert>
+    <update id="updateDelivery" parameterType="Delivery">
+        UPDATE TB_DELIVERY
+        SET STATE = #{state},
+            DELETE_TIME = TO_CHAR(SYSDATE,'YYYY/MM/DD HH24:MI:SS')
+        WHERE DEID=#{deid}
+    </update>
+    <update id="updateDeliveryByPayment" parameterType="Delivery">
+        UPDATE TB_DELIVERY
+        SET STATE = #{state},
+            DELETE_TIME = TO_CHAR(SYSDATE,'YYYY/MM/DD HH24:MI:SS')
+        WHERE PAID=#{paid}
+    </update>
+</mapper>

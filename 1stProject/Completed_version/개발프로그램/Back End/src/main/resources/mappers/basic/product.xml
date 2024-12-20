@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itn2024.projectb.mapper.basic.ProductMapper">
+
+    <select id="selectProductList" resultType="Product">
+        SELECT p.prid, p.code, p.name, p.karegorie, p.gender, p.price,
+               p.contents, p.sales, p.insert_time, p.update_time,
+               MIN(f.file_url) AS imageUrl
+        FROM TB_PRODUCT p
+                 LEFT JOIN TB_FILE_DB f ON f.prid = p.prid
+        GROUP BY p.prid, p.code, p.name, p.karegorie, p.gender, p.price,
+                 p.contents, p.sales, p.insert_time, p.update_time
+    </select>
+
+    <select id="selectProductTotCnt" resultType="int">
+        SELECT COUNT(*) FROM TB_PRODUCT
+    </select>
+
+    <select id="selectProductListWithPaging" parameterType="Map" resultType="Product">
+        SELECT p.prid, p.code, p.name, p.karegorie, p.gender, p.price, p.contents, p.sales, p.insert_time, p.update_time,
+        (SELECT MIN(f.file_url)
+        FROM TB_FILE_DB f
+        WHERE f.prid = p.prid) AS imageUrl
+        FROM TB_PRODUCT p
+        LEFT JOIN TB_FILE_DB f ON f.prid = p.prid
+        WHERE p.prid > #{lastPrid}  <!-- 마지막으로 조회된 prid 값보다 큰 값만 조회 -->
+        ORDER BY p.prid  <!-- prid 순으로 정렬 -->
+        OFFSET 0 ROWS FETCH NEXT #{size} ROWS ONLY  <!-- 페이지 크기만큼 가져옴 -->
+    </select>
+
+
+    <!-- 제품 카테고리별 상세 조회 -->
+    <select id="selectProductCategoryList" parameterType="Criteria" resultType="Product">
+        SELECT p.*, f.file_url AS imageUrl
+        FROM TB_PRODUCT p
+        LEFT JOIN TB_FILE_DB f ON p.prid = f.prid
+        WHERE p.karegorie = #{karegorie}  <!-- Criteria의 karegorie 필드 사용 -->
+        ORDER BY p.prid DESC
+    </select>
+
+
+    <!-- 제품 상세 조회 -->
+    <select id="selectProduct" parameterType="String" resultType="Product">
+        SELECT p.*, f.file_url AS imageUrl
+        FROM TB_PRODUCT p
+                 LEFT JOIN TB_FILE_DB f ON p.prid = f.prid
+        WHERE p.prid = #{prid}
+    </select>
+
+    <select id="selectProductListAdmin" parameterType="Criteria" resultType="Product">
+        SELECT p.prid,
+        p.code,
+        p.name,
+        p.karegorie,
+        p.gender,
+        p.price,
+        p.contents,
+        p.sales,
+        p.insert_time,
+        p.update_time,
+        (SELECT f.file_url
+        FROM TB_FILE_DB f
+        WHERE f.prid = p.prid
+        ORDER BY f.uuid ASC
+        FETCH FIRST 1 ROWS ONLY) AS imageUrl
+        FROM TB_PRODUCT p
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <!-- 이름으로 검색 -->
+                <if test="searchCriteria == 'name'">
+                    AND p.name LIKE '%' || #{searchKeyword} || '%'
+                </if>
+                <!-- 코드로 검색 -->
+                <if test="searchCriteria == 'code'">
+                    AND p.code = #{searchKeyword}
+                </if>
+            </if>
+        </where>
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS
+        FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+
+
+
+    <!-- 총 아이템 수 조회 -->
+    <select id="selectProductListAdminTotCnt" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_PRODUCT p
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <!-- 이름으로 검색 -->
+                <if test="searchCriteria == 'name'">
+                    AND p.name LIKE '%' || #{searchKeyword} || '%'
+                </if>
+                <!-- 코드로 검색 -->
+                <if test="searchCriteria == 'code'">
+                    AND p.code = #{searchKeyword}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <!-- 관리자 페이지 제품 상세 조회 -->
+    <select id="selectProductAdmin" parameterType="String" resultType="Product">
+        SELECT p.*
+        FROM TB_PRODUCT p
+        WHERE p.prid = #{prid}
+    </select>
+
+    <insert id="insert" parameterType="Product">
+        <!-- PRID 생성 (기존 로직 유지) -->
+        <selectKey keyProperty="prid" resultType="string" order="BEFORE">
+            SELECT 'PR' || LPAD(TO_CHAR(PRODUCT_SEQ.NEXTVAL), 5, '0') FROM dual
+        </selectKey>
+
+        <!-- CODE 생성: 마지막 등록된 CODE 조회 -->
+        INSERT INTO TB_PRODUCT
+        (PRID, CODE, KAREGORIE, GENDER, PRICE, CONTENTS, NAME, SALES)
+        VALUES (
+        #{prid},
+        -- CODE 생성 로직
+        CASE #{karegorie}
+        WHEN '두루마기' THEN 'DM' ||
+        LPAD(
+        NVL(
+        (SELECT TO_NUMBER(SUBSTR(CODE, 3))
+        FROM TB_PRODUCT
+        WHERE KAREGORIE = '두루마기'
+        ORDER BY CODE DESC
+        FETCH FIRST 1 ROWS ONLY
+        ) + 1,
+        1
+        ), 5, '0')
+        WHEN '저고리' THEN 'JG' ||
+        LPAD(
+        NVL(
+        (SELECT TO_NUMBER(SUBSTR(CODE, 3))
+        FROM TB_PRODUCT
+        WHERE KAREGORIE = '저고리'
+        ORDER BY CODE DESC
+        FETCH FIRST 1 ROWS ONLY
+        ) + 1,
+        1
+        ), 5, '0')
+        WHEN '바지' THEN 'PN' ||
+        LPAD(
+        NVL(
+        (SELECT TO_NUMBER(SUBSTR(CODE, 3))
+        FROM TB_PRODUCT
+        WHERE KAREGORIE = '바지'
+        ORDER BY CODE DESC
+        FETCH FIRST 1 ROWS ONLY
+        ) + 1,
+        1
+        ), 5, '0')
+        WHEN '치마' THEN 'SK' ||
+        LPAD(
+        NVL(
+        (SELECT TO_NUMBER(SUBSTR(CODE, 3))
+        FROM TB_PRODUCT
+        WHERE KAREGORIE = '치마'
+        ORDER BY CODE DESC
+        FETCH FIRST 1 ROWS ONLY
+        ) + 1,
+        1
+        ), 5, '0')
+        END,
+        #{karegorie}, #{gender}, #{price}, #{contents}, #{name}, 0)
+    </insert>
+
+
+
+
+
+    <select id="countProducts" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_PRODUCT
+    </select>
+
+
+    <!-- Update -->
+    <update id="update" parameterType="Product">
+        UPDATE TB_PRODUCT
+        SET KAREGORIE   = #{karegorie},
+            GENDER      = #{gender},
+            PRICE       = #{price},
+            CONTENTS    = #{contents},
+            NAME        = #{name},
+            SALES       = #{sales},
+            UPDATE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS')
+        WHERE PRID = #{prid}
+    </update>
+
+    <!-- Update -->
+    <update id="updateSales" parameterType="Product">
+        UPDATE TB_PRODUCT
+        SET SALES = SALES + #{sales},
+            UPDATE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS')
+        WHERE PRID = #{prid}
+    </update>
+
+    <!-- Delete -->
+    <delete id="delete" parameterType="String">
+        DELETE
+        FROM TB_PRODUCT
+        WHERE PRID = #{prid}
+    </delete>
+</mapper>

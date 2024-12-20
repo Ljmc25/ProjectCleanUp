@@ -1,0 +1,170 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.title{
+    text-align: center;
+    font-size:40px;
+    
+}
+
+.all{
+    /* border-style: solid; */
+
+    width: 2400px;
+    height: 1200px;
+}
+
+
+
+.left{
+    float : left;    
+    margin-left: 40px;
+    margin-top: 50px;
+
+    width:175px;
+    height: 300px;
+    /* border-style: solid; */
+    text-align: center;
+}
+
+.main{
+    
+    margin-top: 80px;
+    margin-left: 250px;
+
+    width: 1000px;
+    height: 800px;
+
+    /* border-style: solid; */
+}
+
+.p1{
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.p{
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.p2{
+    color: rgb(216, 216, 216);
+    
+}
+
+/* 테이블 */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    border: 1px solid #dddddd;
+    height: auto;
+}
+.table th.header {
+    background-color: #f5f5f5; /* 연한 빨강 */
+    font-weight: bold;
+}
+.table th.author {
+    background-color: #f5f5f5; /* 연한 초록 */
+    font-weight: bold;
+}
+.table th.response {
+    background-color: #f5f5f5; /* 연한 노랑 */
+    font-weight: bold;
+}
+.table th.date {
+    background-color: #f5f5f5; /* 연한 파랑 */
+    font-weight: bold;
+}
+/* 테이블 밑 답변 */
+.anwser{
+    border: 1px solid #dddddd;
+    width: 100%;
+    min-height: 150px; 
+    height: auto; 
+    padding: 10px; 
+    box-sizing: border-box;
+}
+
+
+
+/* 버튼들 */
+.btn{
+    float: right;
+    margin-right: 25px;
+    margin-top: 10px;
+}
+
+.back-btn,.delete-btn{
+color: white;
+font-size: large;
+font-weight: 600;
+background-color: black;
+
+width: 150px;
+height: 50px;
+}
+
+.hr2{
+    margin: 30px auto;    
+    border: 2px solid;
+}
+
+a {
+    all: unset; /* 모든 기본 스타일 제거 */
+    cursor: pointer; /* 클릭 가능한 상태 유지 */
+    display: inline-block; /* 블록 스타일 유지 */
+}
+a:hover{
+    color: #000;
+}
+
+.input-unstyled {
+    border: none;           /* 테두리 제거 */
+    background: transparent; /* 배경 제거 */
+    box-shadow: none;        /* 박스 쉐도우 제거 */
+    outline: none;           /* 포커스 시 파란 테두리 제거 */
+    font-size: inherit;      /* 부모 폰트 스타일과 크기 유지 */
+    color: inherit;          /* 부모 글자 색상 유지 */
+    width: 100%;             /* 셀 전체 너비 */
+  }
+  
+  .input-unstyled:focus {
+    border-bottom: 1px solid #ccc; /* 필요 시 포커스 스타일 추가 가능 */
+  }
+
+  .tbawnser{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5px;
+    font-size: 16px;
+    text-align: left;
+    border: 1px solid #dddddd;
+    height: 40px;
+  }
+
+  .ta{
+    background-color:#f7f5f5 ;
+    width: 15%;
+    padding-left: 5px;
+  }
+
+  .tb{
+    padding-left: 5px;
+    font-weight: 500;
+  }
+
+  h3{
+    font-weight: 550;
+  }
+
+  .questionc{
+    height: 250px;
+  }

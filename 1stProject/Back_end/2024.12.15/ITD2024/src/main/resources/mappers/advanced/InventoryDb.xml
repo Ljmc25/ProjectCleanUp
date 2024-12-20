@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itn2024.projectb.mapper.advanced.InventoryDbMapper">
+
+    <!--    public List<?> selectInventoryDbList(Criteria searchVO);    -->
+    <select id="selectInventoryDbList" parameterType="Criteria" resultType="InventoryDb">
+        SELECT *
+        FROM TB_INVENTORY
+        WHERE PRID LIKE '%' || #{searchKeyword} || '%'
+        ORDER BY INID ASC
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+
+    <!--    public int selectInventoryDbTotCnt(Criteria searchVO);;-->
+    <select id="selectInventoryDbTotCnt" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_INVENTORY
+        WHERE PRID LIKE '%' || #{searchKeyword} || '%'
+    </select>
+
+<!--    public int insertInventoryDb(InventoryDb inventoryDb);-->
+    <insert id="insertInventoryDb" parameterType="InventoryDb">
+        INSERT INTO TB_INVENTORY (INID, PRID, SIID, COLOR, QUANTITY, INSERT_TIME, DELETE_TIME)
+        VALUES ('IN' || LPAD(TO_CHAR(INVENTORY_SEQ.NEXTVAL), 5, '0'), #{prid}, #{siid}, #{color}, #{quantity}, #{insertTime}, #{deleteTime})
+    </insert>
+
+<!--    public Optional<InventoryDb> selectInventoryDb(String inid);-->
+    <select id="selectInventoryDb" parameterType="String" resultType="InventoryDb">
+        SELECT *
+        FROM TB_INVENTORY
+        WHERE INID = #{inid}
+    </select>
+
+<!--    public int updateInventoryDb(InventoryDb inventoryDb);-->
+    <update id="updateInventoryDb" parameterType="InventoryDb">
+        UPDATE TB_INVENTORY
+        SET PRID        = #{prid},
+            SIID        = #{siid},
+            COLOR       = #{color},
+            QUANTITY    = #{quantity},
+            INSERT_TIME = #{insertTime},
+            DELETE_TIME = #{deleteTime}
+        WHERE INID = #{inid}
+    </update>
+
+<!--    public int deleteInventoryDb(String inid);-->
+    <delete id="deleteInventoryDb" parameterType="String">
+        DELETE
+        FROM TB_INVENTORY
+        WHERE INID = #{inid}
+    </delete>
+
+</mapper>

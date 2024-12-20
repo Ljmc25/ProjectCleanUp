@@ -1,0 +1,214 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.title{
+    text-align: center;
+    font-size:40px;
+}
+
+
+
+.all{
+    /* border-style: solid; */
+    width: 2400px;
+    height: 1200px;
+    margin-top: 100px;
+}
+
+
+
+.left{
+    float : left;    
+    margin-left: 40px;
+    margin-top: 50px;
+    
+
+    width:175px;
+    height: 300px;
+
+
+    /* border-style: solid; */
+    text-align: center;
+}
+
+.main{
+    
+    margin-top: 75px;
+    margin-left: 250px;
+
+    width: 1000px;
+    height: 350px;
+
+    /* border-style: solid; */
+
+}
+
+.p1{
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.p{
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.p2{
+    color: rgb(138, 138, 138);
+    
+}
+
+/* 테이블 */
+.buy-list{
+    width: 100%; 
+    border-collapse: collapse; 
+    border: 1px solid #e0e0e0; 
+    padding: 10px; 
+    text-align: center;
+}
+.buy-list th:nth-child(1){
+    width: 80px;
+}
+.buy-list th:nth-child(2){
+    width: auto;
+}
+.buy-list th:nth-child(3){
+    width: 200px;
+}
+.buy-list th:nth-child(4){
+    width: 100px;
+}
+
+.buy-list th{
+    height: 45px;
+    font-size: 16px;
+    background-color: #ececec !important;
+}
+
+.buy-list td{
+    padding-top: 15px;
+    height: 50px;
+    font-size: 16px;
+}
+
+
+/* pagination */
+.page{
+    text-align: center;
+
+}
+
+
+.btn{
+    float: right;
+    margin-right: 25px;
+    margin-top: 200px;
+}
+
+.write-btn{
+color: white;
+font-size: large;
+font-weight: 600;
+background-color: black;
+
+width: 150px;
+height: 50px;
+}
+.hr2{
+    margin: 30px auto;    
+    border: 2px solid;
+}
+
+a {
+    all: unset; /* 모든 기본 스타일 제거 */
+    cursor: pointer; /* 클릭 가능한 상태 유지 */
+    display: inline-block; /* 블록 스타일 유지 */
+}
+a:hover{
+    color: #000;
+}
+
+/* 페이징 */
+/* Bootstrap 페이지네이션 초기화 */
+.pagination {
+    display: inline-flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0;
+    font-weight: 700; /* 폰트 두께 700으로 두껍게 */
+}
+
+.pagination li {
+    margin: 0;
+}
+
+.pagination a, .pagination span {
+    display: block;
+    padding: .375rem .75rem;
+    color: #000;  /* 기본 텍스트 색상 검은색 */
+    text-decoration: none;
+    background-color: transparent; /* 배경색 제거 */
+    border: 0; /* 테두리 제거 */
+    border-radius: 0; /* 모서리 둥글기 제거 */
+    font-size: 20px; /* 기본 폰트 크기 20px */
+    font-weight: 700; /* 폰트 두께 700으로 두껍게 */
+}
+
+/* Prev, Next 버튼 텍스트로 변경 */
+.pagination .page-item:first-child .page-link {
+    content: "Prev"; /* Prev 텍스트 추가 */
+    font-size: 20px;  /* Prev 폰트 크기 */
+}
+
+.pagination .page-item:last-child .page-link {
+    content: "Next"; /* Next 텍스트 추가 */
+    font-size: 20px;  /* Next 폰트 크기 */
+}
+
+/* <<, >> 버튼 삭제 */
+.pagination .page-item:first-child,
+.pagination .page-item:last-child {
+    display: none;
+}
+
+/* 선택되지 않은 항목에 기본 텍스트 색상 적용 */
+.pagination .page-item:not(.active) .page-link {
+    color: #000; /* 비활성화된 항목의 텍스트 색상 */
+    background-color: transparent; /* 배경색 제거 */
+    border: none; /* 테두리 제거 */
+}
+
+/* 활성화된 항목 스타일 (선택된 항목에만 스타일 적용) */
+.pagination .page-item.active .page-link {
+    background-color: transparent; /* 배경색 제거 */
+    color: #000;  /* 텍스트 색상 검은색 */
+    border-color: transparent; /* 테두리 제거 */
+    border-bottom: 2px solid #000; /* 선택된 항목에 밑줄 추가 */
+}
+
+/* 클릭 시 효과 제거 */
+.pagination .page-item .page-link:focus,
+.pagination .page-item .page-link:active {
+    outline: none; /* 포커스 시 파란색 효과 제거 */
+    box-shadow: none; /* 박스 그림자 제거 */
+}
+
+/* 호버 효과 제거 */
+.pagination .page-item:hover .page-link {
+    background-color: transparent; /* 호버시 배경색 제거 */
+    color: #000; /* 호버시 텍스트 색상 유지 */
+    border-color: transparent; /* 호버시 테두리 제거 */
+}
+
+/* 비활성화된 항목 스타일 */
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;  /* 비활성화된 텍스트 색상 */
+    pointer-events: none;  /* 클릭 불가 */
+}
+
+/* 페이지 항목에 여백 추가 */
+.pagination li {
+    margin: 0 5px; /* 좌우 여백 추가 */
+}

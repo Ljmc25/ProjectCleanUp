@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!-- Settings 설정 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+
+<!--   TODO: 별칭 설정 -->
+    <typeAliases>
+        <typeAlias type="com.itn2024.projectb.vo.common.Criteria" alias="Criteria"/>
+        <typeAlias type="com.itn2024.projectb.vo.basic.Example" alias="Example"/>
+        <typeAlias type="com.itn2024.projectb.vo.basic.Product" alias="Product"/>
+        <typeAlias type="com.itn2024.projectb.vo.auth.Member" alias="Member"/>
+        <typeAlias type="com.itn2024.projectb.vo.advanced.OrderDb" alias="OrderDb"/>
+        <typeAlias type="com.itn2024.projectb.vo.advanced.Payment" alias="Payment"/>
+        <typeAlias type="com.itn2024.projectb.vo.advanced.InventoryDb" alias="InventoryDb"/>
+        <typeAlias type="com.itn2024.projectb.vo.basic.Inquiry" alias="Inquiry"/>
+        <typeAlias type="com.itn2024.projectb.vo.dto.InquiryDto" alias="InquiryDto"/>
+        <typeAlias type="com.itn2024.projectb.vo.advanced.Delivery" alias="Delivery"/>
+        <typeAlias type="com.itn2024.projectb.vo.basic.Notice" alias="Notice"/>
+        <typeAlias type="com.itn2024.projectb.vo.dto.CartDto" alias="CartDto"/>
+        <typeAlias type="com.itn2024.projectb.vo.advanced.Cart" alias="Cart"/>
+        <typeAlias type="com.itn2024.projectb.vo.dto.OrderDto" alias="OrderDto"/>
+        <typeAlias type="com.itn2024.projectb.vo.advanced.FileDb" alias="FileDb"/>
+
+    </typeAliases>
+</configuration>

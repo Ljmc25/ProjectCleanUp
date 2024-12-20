@@ -1,0 +1,135 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.title{
+    text-align: center;
+    font-size:40px;
+    
+}
+
+.all{
+    /* border-style: solid; */
+
+    width: 2400px;
+    height: 1200px;
+}
+
+
+
+.left{
+    float : left;    
+    margin-left: 40px;
+    margin-top: 50px;
+
+    width:175px;
+    height: 300px;
+    /* border-style: solid; */
+    text-align: center;
+}
+
+.main{
+    
+    margin-top: 50px;
+    margin-left: 250px;
+
+    width: 1000px;
+    height: 800px;
+
+    /* border-style: solid; */
+}
+
+.p1{
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.p{
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.p2{
+    color: rgb(216, 216, 216);
+    
+}
+
+/* 테이블 */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #dddddd;
+    border-top: 3px solid;
+    height:580px;
+  }
+
+
+
+  .title-cell {
+    background-color: #f4f4f4 !important ;
+    padding-bottom: 20px !important;
+    width: 75px;
+  }
+  
+  .body-cell {
+    background-color: #f4f4f4 !important; 
+  }
+  
+  .buy-list th:nth-child(1) {
+    width: 75px;
+  
+  }
+  
+  .buy-list th:nth-child(2) input {
+    width: 50%; /* 제목 옆 텍스트박스 길이 절반으로 줄이기 */
+  }
+  
+
+
+/* 버튼들 */
+.btn{
+    float: right;
+    margin-right: 25px;
+    margin-top: 10px;
+}
+
+.upload-btn{
+color: white;
+font-size: large;
+font-weight: 600;
+background-color: black;
+
+width: 150px;
+height: 50px;
+}
+
+.delete-btn{
+color: black;
+font-size: large;
+font-weight: 600;
+background-color: white;
+
+width: 150px;
+height: 50px;
+}
+
+.hr2{
+    margin: 30px auto;    
+    border: 2px solid;
+}
+
+a {
+  all: unset; /* 모든 기본 스타일 제거 */
+  cursor: pointer; /* 클릭 가능한 상태 유지 */
+  display: inline-block; /* 블록 스타일 유지 */
+}
+a:hover{
+  color: #000;
+}
+
+/* QUill -editor 에디터 */

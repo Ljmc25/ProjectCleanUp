@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itn2024.projectb.mapper.basic.NoticeMapper">
+
+	<!-- 전체 조회 : -->
+	<select id="selectNoticeList"
+			parameterType="Criteria"
+			resultType="Notice">
+		SELECT * FROM TB_NOTICE
+		WHERE TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OFFSET #{pageIndex} * #{recordCountPerPage} ROWS
+		FETCH NEXT #{recordCountPerPage} ROWS ONLY
+	</select>
+	<!--총건수 -->
+	<select id="selectNoticeListTotCnt"
+			parameterType="Criteria"
+			resultType="int">
+		SELECT COUNT(*) FROM TB_NOTICE
+		WHERE TITLE LIKE '%' ||#{searchKeyword}|| '%'
+	</select>
+	<!--등록-->
+	<!--	public int insert(Notice notice);-->
+	<insert id="insert" parameterType="Notice">
+		INSERT INTO TB_NOTICE
+			(NOID, TITLE, CONTENTS, IMAGE_URL, WRITER, FILE_DATA)
+		VALUES (#{noid}, #{title}, #{contents}, #{imageUrl}, #{writer}, #{fileData})
+	</insert>
+
+	<!-- 상세조회-->
+	<select id="selectNotice"
+			parameterType="String"
+			resultType="Notice">
+		SELECT * FROM TB_NOTICE
+		WHERE NOID = #{noid}
+	</select>
+
+	<!--업데이트-->
+	<update id="update"
+			parameterType="Notice">
+		UPDATE TB_NOTICE
+		SET CONTENTS = #{contents},
+			IMAGE_URL = #{imageUrl},
+			FILE_DATA = #{fileData},
+			WRITER = #{writer}
+		WHERE NOID = #{noid}
+	</update>
+
+	<!--삭제	-->
+	<delete id="delete"
+			parameterType="String">
+		DELETE FROM TB_NOTICE
+		WHERE NOID = #{noid}
+	</delete>
+
+</mapper>
+
+
+
+
+
+
+
+

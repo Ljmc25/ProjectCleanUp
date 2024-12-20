@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itn2024.projectb.mapper.basic.ExampleMapper">
+    <select id="selectExampleList" parameterType="Criteria" resultType="Example">
+        SELECT *
+        FROM TB_EXAMPLE
+        WHERE TITLE LIKE '%'|| #{searchKeyword} ||'%'
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS
+            FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+    <select id="selectExampleListTotCnt" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*) FROM TB_EXAMPLE
+        WHERE TITLE LIKE '%' ||#{searchKeyword}|| '%'
+    </select>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itn2024.projectb.mapper.advanced.PaymentMapper">
+<!--   제품 페이지 조회-->
+    <select id="selectPaymentList" parameterType="Criteria" resultType="Payment">
+        SELECT * FROM TB_PAYMENT
+        <if test="email != null">
+            WHERE EMAIL = #{email}
+        </if>
+        ORDER BY PAID DESC
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+
+<!--    총 건수 구하기-->
+    <select id="selectPaymentListTotCnt"  parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_PAYMENT
+        <if test="email != null">
+            WHERE EMAIL = #{email}
+        </if>
+    </select>
+
+<!--상세 조회-->
+    <select id="selectPayment" parameterType="String" resultType="Payment">
+        SELECT * FROM TB_PAYMENT WHERE PAID = #{paid}
+    </select>
+
+<!--insert-->
+<insert id="insert" parameterType="Payment" useGeneratedKeys = "true" keyColumn = "PAID" keyProperty = "paid">
+    INSERT INTO TB_PAYMENT
+    (PAID, CODE, PAY_TYPE, TOTAL_PRICE, EMAIL)
+    VALUES
+    (
+    -- PAID 생성: 'PR' + 5자리 숫자
+    'PA' || LPAD(PAYMENT_SEQ.NEXTVAL, 5, '0'),
+
+    -- 나머지 컬럼 값들
+    'XL' || LPAD(PAYMENT_SEQ.NEXTVAL+265, 5, '0'), 'CARD', #{totalPrice}, #{email}
+    )
+    </insert>
+<!--update-->
+<update id="update" parameterType="Payment">
+    BEGIN
+        UPDATE TB_PAYMENT SET DELETE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS') WHERE PAID = #{paid};
+        UPDATE TB_ORDER SET DELETE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS') WHERE PAID = #{paid};
+        UPDATE TB_DELIVERY SET STATE = '배송취소', DELETE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS') WHERE PAID = #{paid};
+    END;
+</update>
+
+
+</mapper>

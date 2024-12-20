@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itn2024.projectb.mapper.basic.InquiryMapper">
+
+    <!-- 전체 조회-->
+    <select id="selectInquiryListByEmail" parameterType="Criteria" resultType="InquiryDto">
+        SELECT
+            Q.IQID AS iqid,
+            Q.TITLE AS title,
+            Q.CONTENTS AS content,
+            Q.WRITER AS writer,
+            Q.INSERT_TIME AS insertTime,
+            A.IQID AS answerId,
+            A.CONTENTS AS answerContent,
+            A.WRITER AS answerWriter,
+            A.INSERT_TIME AS answerInsertTime
+        FROM TB_INQUIRY Q LEFT JOIN TB_INQUIRY A ON Q.IQID = A.REID
+        WHERE Q.TITLE IS NOT NULL AND Q.WRITER = #{email}
+        ORDER BY IQID DESC
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS
+            FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+
+    <!-- 전체 조회 관리자-->
+    <select id="selectInquiryList" parameterType="Criteria" resultType="InquiryDto">
+        <![CDATA[
+        SELECT
+            Q.IQID AS iqid,
+            Q.TITLE AS title,
+            Q.CONTENTS AS content,
+            Q.WRITER AS writer,
+            Q.INSERT_TIME AS insertTime,
+            A.IQID AS answerId,
+            A.CONTENTS AS answerContent,
+            A.WRITER AS answerWriter,
+            A.INSERT_TIME AS answerInsertTime
+        FROM TB_INQUIRY Q, TB_INQUIRY A
+        WHERE Q.iqid = A.reid(+) AND Q.TITLE IS NOT NULL
+        ]]>
+        <choose>
+            <when test="searchCriteria == 'title'">
+                AND Q.TITLE LIKE '%' || #{searchKeyword} || '%'
+            </when>
+            <when test="searchCriteria == 'writer'">
+                AND Q.WRITER LIKE '%' || #{searchKeyword} || '%'
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+        <![CDATA[
+        ORDER BY IQID DESC
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS
+        FETCH NEXT #{recordCountPerPage} ROWS ONLY
+        ]]>
+    </select>
+
+    <!--총건수 구하기-->
+    <select id="selectInquiryListToCnt"  parameterType="Criteria" resultType="int">
+        <![CDATA[ SELECT COUNT(*) FROM TB_INQUIRY ]]>
+        <choose>
+        <when test="searchCriteria == 'title'">
+            WHERE TITLE LIKE '%' || #{searchKeyword} || '%'
+        </when>
+        <when test="searchCriteria == 'writer'">
+            WHERE WRITER LIKE '%' || #{searchKeyword} || '%'
+        </when>
+        <otherwise>
+
+        </otherwise>
+    </choose>
+    </select>
+
+<!--질문글상세조회-->
+    <select id="selectInquiry"
+            parameterType="String"
+            resultType="InquiryDto">
+        SELECT
+            Q.IQID AS iqid,
+            Q.TITLE AS title,
+            Q.CONTENTS AS content,
+            Q.WRITER AS writer,
+            Q.INSERT_TIME AS insertTime,
+            A.IQID AS answerId,
+            A.CONTENTS AS answerContent,
+            A.WRITER AS answerWriter,
+            A.INSERT_TIME AS answerInsertTime
+        FROM TB_INQUIRY Q
+                 LEFT JOIN TB_INQUIRY A ON Q.IQID = A.REID
+        WHERE Q.IQID = #{iqid}
+    </select>
+
+<!--질문글 INSERT-->
+    <insert id="insert"
+            parameterType="Inquiry">
+        INSERT INTO TB_INQUIRY(
+            IQID,
+            TITLE,
+            CONTENTS,
+            WRITER)
+        VALUES (
+                   'IQ' || LPAD(TO_CHAR(INQUIRY_SEQ.NEXTVAL),5,'0'),
+                   #{title},
+                   #{contents},
+                   #{writer}
+               )
+    </insert>
+
+<!--답변글 INSERT-->
+    <insert id="insertAnswer"
+            parameterType="Inquiry">
+        INSERT INTO TB_INQUIRY(
+            IQID, CONTENTS, WRITER, REID)
+        VALUES (
+                   'IQ' || LPAD(TO_CHAR(INQUIRY_SEQ.NEXTVAL), 5, '0'),
+                    #{contents}, #{writer}, #{reid})
+    </insert>
+
+    <update id="updateAnswerStatus" parameterType="String">
+        UPDATE TB_INQUIRY
+        SET UPDATE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS')
+        WHERE IQID = #{reid}
+    </update>
+
+
+
+    <delete id="delete"
+            parameterType="String">
+        DELETE FROM TB_INQUIRY
+        WHERE IQID = #{iqid}
+    </delete>
+
+    <update id="update"
+            parameterType="Inquiry"
+            >
+        UPDATE TB_INQUIRY
+        SET CONTENTS  = #{contents},
+            WRITER = #{writer},
+            UPDATE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS')
+        WHERE IQID = #{iqid}
+    </update>
+
+    <select id="selectInquiryListToCntByEmail" resultType="int"
+            parameterType="Criteria">
+        SELECT COUNT(*) FROM TB_INQUIRY
+        WHERE WRITER =#{email}
+    </select>
+</mapper>
