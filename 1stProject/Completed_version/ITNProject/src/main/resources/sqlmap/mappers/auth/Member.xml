@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itn.projectb.mapper.auth.MemberMapper">
+	<!-- 상세조회/로그인 -->
+	<select id="authenticate" parameterType="MemberVO"
+		resultType="MemberVO">
+		SELECT * FROM MEMBER_TB
+		WHERE EMAIL = #{email}
+	</select>
+
+	<!-- 회원가입 -->
+	<!-- public void register(MemberVO memberVO); -->
+	<insert id="register" parameterType="MemberVO">
+
+		INSERT INTO MEMBER_TB
+		(EMAIL, PASSWORD, PHONE) VALUES (#{email},#{password},#{phone})
+
+	</insert>
+	
+		<!-- 아이디 중복 체크 -->
+<!-- 	public int checkEmail(MemberVO memberVO); -->
+	<select id="checkEmail" parameterType="MemberVO" resultType="int">
+
+		SELECT COUNT (*) FROM MEMBER_TB
+		WHERE EMAIL =  #{email}
+
+	</select>
+	<!-- 관리자 페이지 -->
+	<select id="selectUserList" parameterType="Criteria" resultType="MemberVO">
+		SELECT *
+		FROM MEMBER_TB
+		WHERE EMAIL LIKE '%' || #{searchKeyword} || '%'
+		ORDER BY insert_time ASC -- 가입일을 기준으로 오름차순 정렬
+		OFFSET #{firstIndex} ROWS
+		FETCH NEXT #{recordCountPerPage} ROWS ONLY
+
+	</select>
+
+	<!-- List<UserVO> getUserList(@Param("offset") int offset, @Param("limit") 
+		int limit); -->
+	<select id="getUserList" parameterType="map" resultType="MemberVO">
+		SELECT *
+		FROM MEMBER_TB
+		ORDER BY insert_time DESC
+		OFFSET #{offset} ROWS
+		FETCH NEXT
+		#{limit} ROWS ONLY
+
+	</select>
+
+	<!-- int getTotalRecords(); -->
+	<select id="getTotalRecords" resultType="int">
+		SELECT COUNT(*) FROM
+		MEMBER_TB
+	</select>
+	
+	 <select id="getTotalUserCount" resultType="int">
+        SELECT COUNT(*) FROM MEMBER_TB  
+    </select>
+	<select id="selectMember" parameterType="MemberVO" resultType="MemberVO">
+		SELECT * FROM MEMBER_TB
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<update id="updateMember" parameterType="MemberVO">
+		UPDATE MEMBER_TB SET PASSWORD=#{password}, PHONE=#{phone},
+		UPDATE_TIME=TO_CHAR(SYSDATE,'YYYY/MM/DD HH24:MI:SS') 
+		WHERE EMAIL=#{email}
+	</update>
+</mapper>

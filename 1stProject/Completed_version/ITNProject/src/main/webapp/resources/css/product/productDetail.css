@@ -1,0 +1,184 @@
+main hr{
+    color: white;
+}
+
+main body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+}
+main .movie-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+}
+main .movie-description {
+    color: white;
+}
+main .review-card {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid lightslategray;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+main .review-card:hover {
+    transform: scale(1.02);
+    background-color: rgba(0, 0, 0, 0.1);
+}
+main .embed-responsive {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+}
+main .embed-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/* main .movie-header {
+    
+    background-color: black;
+    height: 100%;
+    background-image: url('../img/background3.jpg'); 배경 이미지 URL */
+    /* background-size: cover; */
+    /* background-position: center;
+    padding: 20px;
+    color: white;
+    
+} */
+
+
+
+main .category-menu {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+main .category-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    background-color: #007BFF;
+    color: white;
+    transition: background-color 0.3s;
+}
+main .category-button:hover {
+    background-color: #0056b3;}
+
+    main .first-divided{
+ /* background-image: url('../../img/big_background4.jpg');*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+
+
+
+/* main .s-divided{
+    background-image: url(../img/ticket-2974645_1280.jpg);
+    
+    background-repeat: repeat;
+   
+} */
+main .color2{
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 120px;
+    
+}
+
+main .color4{
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 40px;
+    
+}
+main .color5{
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 49px;
+    
+}
+main .color{
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+main .color3{
+    color: white;
+    
+}
+
+/* 비디오 가로3 */
+main .video-row {
+    display: flex; /* Flexbox 사용 */
+    justify-content: space-between; /* 간격 조정 */
+}
+
+main .video-item {
+    flex: 1; /* 비디오 항목이 동일한 너비를 가지도록 설정 */
+    margin: 0 10px; /* 비디오 사이의 여백 */
+}
+
+main .embed-responsive {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 비율 유지 */
+    height: 0;
+    overflow: hidden;
+}
+
+main .embed-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 페이지 기능 */
+main .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+main .page-button {
+    padding: 10px 15px;
+    border: 1px solid #007BFF;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: white;
+    color: #007BFF;
+    transition: background-color 0.3s, color 0.3s;
+}
+main .page-button:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* 큰배경이미지 */
+main .movie-header {
+    background-color: black;
+    height: 100%;
+   /* background-image: url('../../img/background4.jpg');   배경 이미지 URL */
+    background-size: cover; /* 배경 이미지를 전체 영역에 맞게 조정 */
+    background-position: center;
+    padding: 20px;
+    color: white;
+    text-shadow: 1px 1px 2px black; /* 텍스트 가독성을 위한 그림자 추가 */
+}
+/* 리뷰  */
+main .s-divided{
+    background-image: url(resources/img/ticket-2974645_1280.jpg);
+    
+    background-repeat: repeat;
+   
+}

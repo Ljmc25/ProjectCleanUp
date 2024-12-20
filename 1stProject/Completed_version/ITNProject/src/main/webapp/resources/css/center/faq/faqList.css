@@ -1,0 +1,71 @@
+@charset "UTF-8";
+
+main .sidebar {
+    background-color: rgb(0, 12, 26);
+    color: white;
+    padding: 15px;
+    width: 200px;
+    margin-top: 200px;
+    margin-left: 200px;
+    border-radius: 30px;
+}
+
+main .sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 8px;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+main .sidebar a:hover {
+    background-color: skyblue;
+}
+
+/* 여기까지 사이드바 끝 */
+
+main .board-area {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 20px;
+    width: 850px;
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
+
+main .search-bar {
+    display: flex;
+    gap: 10px;
+    width: 300px;
+}
+
+main .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+main .faq-item {
+    background-color: #ffffff;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+main .faq-item:hover {
+    background-color: #e9ecef;
+}
+
+main .faq-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: black;
+}
+
+main .faq-item p {
+    margin-bottom: 0;
+    color: crimson;
+}

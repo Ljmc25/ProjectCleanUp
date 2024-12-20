@@ -1,0 +1,13 @@
+@charset "UTF-8";
+.insertDate{
+    float: right;
+    margin-bottom: 10%;
+}
+
+.mb-3 .form-control{
+	border: 1px soild black;
+}
+
+.mb-5 .form-control{
+	border: 1px soild black;
+}

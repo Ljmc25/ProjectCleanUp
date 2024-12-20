@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itn.projectb.mapper.basic.BookMapper">
+	<insert id="insertBook" parameterType="BookVO" useGeneratedKeys="true" keyColumn="BOID" keyProperty="boid">  
+		INSERT INTO BOOK_TB (BOID,BOOK_NUM,EMAIL,SELECT_NUM,SELECT_SEAT,CHILDREN_NUM,TEENAGER_NUM,ADULT_NUM
+					,AGED_NUM,SCID,TITLE,TOTALPRICE,CITY,CINEMA,BRANCH,THEATER,ADDRESS,SHOWING_TIME
+					,START_TIME,END_TIME,RUNNING_TIME,IMAGE_SMALL_URL,CHILDREN_PRICE,TEENAGER_PRICE
+					,ADULT_PRICE,AGED_PRICE)
+					
+		VALUES('BO' || LPAD(TO_CHAR(BOOK_SEQ.NEXTVAL),3,'0'), 'ITN' || LPAD(TO_CHAR(BOOK_SEQ.NEXTVAL)
+			,3,'0'), #{email},#{selectNum},#{selectSeat},#{childrenNum},#{teenagerNum},#{adultNum},#{agedNum}
+			,#{scid},#{title},#{totalprice},#{city},#{cinema},#{branch},#{theater},#{address},#{showingTime}
+			,#{startTime},#{endTime},#{runningTime},#{imageSmallUrl},#{childrenPrice},#{teenagerPrice}
+			,#{adultPrice},#{agedPrice})
+	</insert>
+	<select id="selectBookId" parameterType="string" resultType="BookVO">
+		SELECT * 
+		FROM BOOK_TB
+		WHERE BOID = #{boid}	
+	</select>
+	<select id="selectBookList" parameterType="Criteria" resultType="BookVO">
+		SELECT * FROM BOOK_TB
+		WHERE EMAIL=#{email}
+		ORDER BY INSERT_TIME DESC
+		OFFSET #{firstIndex} ROWS
+		FETCH NEXT #{recordCountPerPage} ROWS ONLY
+	</select>
+		<select id="selectBookListTotCnt" parameterType="Criteria" resultType="int">
+		SELECT COUNT(*) FROM BOOK_TB
+		WHERE EMAIL=#{email}
+	</select>
+	<update id="updateBookDate" parameterType="String">
+		UPDATE BOOK_TB SET 
+		UPDATE_TIME=TO_CHAR(SYSDATE,'YYYY/MM/DD HH24:MI:SS') 
+		WHERE BOID=#{boid}
+	</update>
+</mapper>

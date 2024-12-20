@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itn.projectb.mapper.basic.PaymentMapper">
+<select id="selectPaymentByBoid" parameterType="String" resultType="PaymentVO">
+	SELECT * FROM PAYMENT_TB WHERE boid = #{boid}
+</select>
+<insert id="insertPayment" parameterType="PaymentVO">
+	INSERT INTO PAYMENT_TB (PAID, EMAIL, METHOD_TYPE, TOTAL_PRICE, BOID, BOOK_NUM)
+	VALUES ('PA' || LPAD(TO_CHAR(PAYMENT_SEQ.NEXTVAL),3,'0'), #{email}, #{methodType}, #{totalPrice}, #{boid}, #{bookNum})
+</insert>
+<select id="selectPaymentList" parameterType="MemberVO" resultType="PaymentVO">
+	SELECT * FROM PAYMENT_TB 
+	WHERE EMAIL=#{email}
+</select>
+<update id="updatePaymentDate" parameterType="String">
+	UPDATE PAYMENT_TB SET 
+	UPDATE_TIME=TO_CHAR(SYSDATE,'YYYY/MM/DD HH24/MI/SS') 
+	WHERE BOID=#{boid}
+</update>
+</mapper>

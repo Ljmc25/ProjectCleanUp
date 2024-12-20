@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itn.projectb.mapper.basic.ShowingMapper">
+	<insert id="createShowing" parameterType="ShowingVO">
+		INSERT INTO SCREENING_TB(
+		SCID,TITLE,CITY,CINEMA,BRANCH,THEATER,SEATS,
+		REMAIN_SEATS,ADDRESS,SHOWING_TIME,START_TIME,END_TIME) 
+		VALUES(CONCAT('SC',LPAD(TO_CHAR(SCREENING_SEQ.NEXTVAL),3,'0')),
+		#{title},#{city},#{cinema},#{branch},#{theater},#{seats},
+		#{remainSeats},#{address},
+		#{showingTime} || ' ' || '00:00:00',
+		#{showingTime} || ' ' || #{startTime},
+		#{showingTime} || ' ' || #{endTime})
+	</insert>
+</mapper>

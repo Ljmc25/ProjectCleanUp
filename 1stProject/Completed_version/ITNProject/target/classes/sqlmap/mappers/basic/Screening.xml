@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itn.projectb.mapper.basic.ScreeningMapper">
+<select id="getProductsByDate"  parameterType="string" resultType="ScreeningVO">
+	SELECT DISTINCT TITLE
+	FROM screening_tb 
+	WHERE SUBSTR(SHOWING_TIME,1,10) = #{date}
+</select>
+
+<select id="getScreeningInfo" parameterType="map" resultType="ScreeningVO">
+    SELECT 
+    	SCID as scid,
+      	SUBSTR(START_TIME, INSTR(START_TIME, ' ') + 1, 5)AS startTime,
+        SUBSTR(END_TIME, INSTR(END_TIME, ' ') + 1, 5)AS endTime,
+        TITLE AS title,
+        THEATER AS theater,
+        SEATS AS seats,
+        REMAIN_SEATS AS remainSeats
+    FROM 
+        SCREENING_TB 
+    WHERE 
+        SUBSTR(SHOWING_TIME, 1, 10) = #{date} AND  
+        TITLE = #{movie} AND  
+        CITY = #{city} AND  
+        BRANCH = #{branch} 
+</select> 
+
+
+<select id="getScreeningById" parameterType="string" resultType="ScreeningVO">
+    SELECT
+    	SCID as scid,
+    	SUBSTR(SHOWING_TIME,1,10) as showingTime, 
+        SUBSTR(START_TIME, INSTR(START_TIME, ' ') + 1, 5) AS startTime,
+        SUBSTR(END_TIME, INSTR(END_TIME, ' ') + 1, 5) AS endTime,
+        BRANCH as branch,
+        TITLE AS title,
+        THEATER AS theater,
+        SEATS AS seats,
+        REMAIN_SEATS AS remainSeats,
+        RESERVED_SEATS as reservedSeats,
+        ADDRESS as address,
+        CINEMA as cinema,
+        CITY as city
+    FROM 
+        SCREENING_TB 
+    WHERE 
+        SCID = #{scid}
+</select>
+
+<update id="updateReservedSeat" parameterType="ScreeningVO">
+    UPDATE SCREENING_TB
+    SET RESERVED_SEATS = #{reservedSeats} || ',' || RESERVED_SEATS
+    WHERE SCID = #{scid}
+</update>
+
+<update id="updateRemainSeats" parameterType="ScreeningVO">
+    UPDATE SCREENING_TB
+    SET REMAIN_SEATS = #{remainSeats} -- updatedRemainSeats
+    WHERE SCID = #{scid}
+</update>
+<select id="selectScreeningScid" parameterType="String" resultType="ScreeningVO">
+	SELECT * FROM SCREENING_TB 
+	WHERE SCID=#{scid}
+</select>
+<update id="updateCencalData" parameterType="ScreeningVO">
+	UPDATE SCREENING_TB SET REMAIN_SEATS=#{remainSeats},
+	RESERVED_SEATS=#{reservedSeats},UPDATE_TIME=TO_CHAR(SYSDATE,'YYYY/MM/DD HH24/MI/SS') 
+	WHERE SCID=#{scid}
+</update>
+</mapper>

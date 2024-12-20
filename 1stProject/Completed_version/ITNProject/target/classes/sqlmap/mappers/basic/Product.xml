@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itn.projectb.mapper.basic.ProductMapper">
+
+	<!-- 상세조회 추가 -->
+	<select id="selectMovie_all" parameterType="string" resultType="ProductVO">
+		SELECT * FROM PRODUCT_TB
+		WHERE PDID = #{pdid}
+	</select>
+
+	<!-- 전체 조회 : -->
+	<select id="selectMovie_allList" parameterType="Criteria" resultType="ProductVO">
+		SELECT * FROM PRODUCT_TB
+		WHERE TITLE LIKE '%'||
+		#{searchKeyword} ||'%'
+		ORDER BY PDID ASC
+		OFFSET #{firstIndex} ROWS
+		FETCH NEXT
+		#{recordCountPerPage} ROWS ONLY
+	</select>
+	<!-- 전체 조회 : -->
+	<select id="selectLimitList" resultType="ProductVO">
+		SELECT * 
+		FROM (SELECT * 
+				FROM PRODUCT_TB
+				ORDER BY INSERT_TIME DESC)
+		WHERE ROWNUM &lt;= 4
+	</select>
+	<!-- 테이블 개수 세기 : public int selectDeptListTotCnt(Criteria searchVO) -->
+	<select id="selectMovie_allListTotCnt" parameterType="Criteria" resultType="int">
+		SELECT COUNT(*) FROM PRODUCT_TB
+		WHERE TITLE LIKE '%' ||
+		#{searchKeyword} ||
+		'%'
+	</select>
+
+	<!-- 부서 추가 : public int insert(DeptVO deptVO) -->
+	<insert id="insert" parameterType="ProductVO">
+		INSERT INTO PRODUCT_TB (
+		    PDID, 
+		    TITLE, 
+		    CONTENTS,
+		    DIRECTOR, 
+		    GENRE, 
+		    RUNNING_TIME, 
+		    RATE,
+		    RATE_URL, 
+		    OPENING_DATE, 
+		    MOVIE_CAST, 
+		    IMAGE_MAIN_URL, 
+		    IMAGE_SMALL_URL, 
+		    IMAGE_BACKGROUND_URL, 
+		    IMAGE_THRIL1_URL, 
+		    IMAGE_THRIL2_URL, 
+		    IMAGE_THRIL3_URL, 
+		    TRAILER_MAIN_URL, 
+		    TRAILER1_URL, 
+		    TRAILER2_URL
+		) VALUES (
+		    CONCAT('PD', LPAD(TO_CHAR(PRODUCT_SEQ.NEXTVAL), 3, '0')), 
+		    #{title}, 
+		    #{contents}, 
+		    #{director}, 
+		    #{genre}, 
+		    #{runningTime}, 
+		    #{rate},
+		    #{rateUrl},  -- 관람 등급 이미지 URL
+		    #{openingDate}, 
+		    #{movieCast}, 
+		    #{imageMainUrl},  -- 이미지 메인 URL
+		    #{imageSmallUrl},  -- 이미지 스몰 URL
+		    #{imageBackgroundUrl},  -- 이미지 배경 URL
+		    #{imageThril1Url},  -- 스릴러1 URL
+		    #{imageThril2Url},  -- 스릴러2 URL
+		    #{imageThril3Url},  -- 스릴러3 URL
+		    #{trailerMainUrl},  -- 트레일러 메인 URL
+		    #{trailer1Url},  -- 트레일러1 URL
+		    #{trailer2Url}   -- 트레일러2 URL
+		)
+	</insert>
+
+	<!-- 영화 실관람평 리뷰 등록 : public void review_register(Movie_allVO movie_allVO); -->
+	<insert id="review_register" parameterType="ProductVO">
+		INSERT INTO
+		PRODUCT_REVIEW_TB (PRID,PDID, REVIEW,WRITER)
+		VALUES ('PR' || LPAD(TO_CHAR(PRODUCT_REVIEW_SEQ.NEXTVAL),3,'0'),
+		(SELECT PDID FROM PRODUCT_TB WHERE TITLE = #{title} AND ROWNUM=1),
+		#{review},
+		#{writer}
+		)
+	</insert>
+
+	<select id="selectProductCount" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM PRODUCT_TB WHERE TITLE  = #{title}
+	</select>
+	
+	<!-- 관람평 전체 조회 : public List<?> selectMovie_reviews(Criteria search_reaviewsVO);-->
+	<select id="selectMovie_reviews" resultType="ProductReviewVO">
+		SELECT * FROM PRODUCT_REVIEW_TB
+		where pdid=#{pdid}
+		ORDER BY INSERT_TIME DESC
+	</select>	
+	
+	<!-- 관람평 테이블 개수 세기 : public int selectMovie_reviewsTotCnt(Criteria searchVO); -->
+	<select id="selectMovie_reviewsTotCnt" parameterType="Criteria" resultType="int">
+	    SELECT COUNT(*) FROM PRODUCT_REVIEW_TB
+		WHERE writer LIKE '%' || #{searchKeyword} || '%'
+	</select>
+
+	<select id="selectProduct" parameterType="ScreeningVO" resultType="ProductVO"> 
+    	SELECT * FROM PRODUCT_TB  
+    	WHERE title = #{title}
+    	<!-- 영화 목록을 가져오는 쿼리 -->
+	</select>
+	
+	<select id="selectProductList" parameterType="com.itn.projectb.vo.common.Criteria" resultType="ProductVO">
+    	SELECT * FROM (
+        	SELECT a.*, ROWNUM row_num
+        	FROM (
+            	SELECT * FROM PRODUCT_TB
+            	<where>
+                	<if test="searchCondition != null and searchCondition != ''">
+                    	AND ${searchCondition} LIKE CONCAT('%', #{searchKeyword}, '%')
+                	</if>
+            	</where>
+            	ORDER BY title
+        	) a
+        	WHERE ROWNUM &lt;= #{pageNum2} * #{recordCountPerPage}  <!-- 페이지 번호에 따라 ROWNUM 계산 -->
+    	)
+    	WHERE row_num > (#{pageNum2} - 1) * #{recordCountPerPage} <!-- 페이지 번호에 따라 시작 인덱스 계산 -->
+	</select>
+
+<!-- 	List<ProductVO> getProductList(@Param("offset") int offset, @Param("limit") int limit);		// 영화 목록을 반환하는 메서드	 -->
+	<select id="getProductList" parameterType="map" resultType="ProductVO">
+		SELECT *
+		FROM PRODUCT_TB
+		ORDER BY INSERT_TIME DESC  <!-- INSERT_TIME 기준으로 내림차순 정렬 -->
+		OFFSET #{offset} ROWS
+		FETCH NEXT #{limit} ROWS ONLY
+	</select>
+
+
+<!-- 	int getTotalRecords();	// 전체 레코드 수를 반환하는 메서드 -->
+	<select id="getTotalProductCount" parameterType="Criteria" resultType="int">
+    	SELECT COUNT(*) FROM PRODUCT_TB
+    		<where>
+        		<if test="searchCondition != null and searchCondition != ''">
+            		AND ${searchCondition} LIKE CONCAT('%', #{searchKeyword}, '%')
+        		</if>
+    		</where>
+	</select>
+		
+<!-- 		 ProductVO selectProductById(String id); 													// 특정 ID로 영화 조회 -->
+  	<select id="selectProductById" parameterType="String" resultType="ProductVO">
+        SELECT * FROM PRODUCT_TB WHERE PDID = #{pdid}
+    </select>
+<!-- 		업데이트 문(수정하기) -->
+	<update id="update" parameterType="ProductVO">
+		        UPDATE PRODUCT_TB
+		        SET title = #{title},
+		            contents = #{contents},
+		            director = #{director},
+		            genre = #{genre},
+		            running_time = #{runningTime},
+		            rate = #{rate},
+		           	rate_url = #{rateUrl},
+		            opening_date = #{openingDate},
+		            movie_cast = #{movieCast},
+		            image_main_url = #{imageMainUrl},
+		            image_small_url = #{imageSmallUrl},
+		            image_background_url = #{imageBackgroundUrl},
+		            image_thril1_url = #{imageThril1Url},
+		            image_thril2_url = #{imageThril2Url},
+		            image_thril3_url = #{imageThril3Url},
+		            trailer_main_url = #{trailerMainUrl},
+		            trailer1_url = #{trailer1Url},
+		            trailer2_url = #{trailer2Url}
+		        WHERE pdid = #{pdid}
+    </update>
+
+	 <delete id="delete" parameterType="String">
+        DELETE FROM PRODUCT_TB WHERE PDID = #{pdid}
+    </delete>
+</mapper>

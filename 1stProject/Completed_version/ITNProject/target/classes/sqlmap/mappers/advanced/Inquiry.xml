@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itn.projectb.mapper.advanced.InquiryMapper">
+
+<insert id="insert" parameterType="inquiryVO">
+    INSERT INTO INQUIRY_TB (INID, CONTENTS, WRITER)
+    VALUES (CONCAT('IN',LPAD(TO_CHAR(INQUIRY_SEQ.NEXTVAL),3,'0')), #{contents}, #{writer})
+</insert>
+<!-- 전체 조회 : -->
+<select id="selectCtList" parameterType="Criteria" resultType="InquiryVO">
+	SELECT * FROM INQUIRY_TB
+	WHERE CONTENTS LIKE '%'|| #{searchKeyword} ||'%' 
+	ORDER BY INSERT_TIME  DESC 
+	OFFSET #{firstIndex} ROWS
+	FETCH NEXT #{recordCountPerPage} ROWS ONLY 
+</select>	
+
+<!-- 테이블 개수 세기 :  -->
+<select id="selectCtListTotCnt" parameterType="Criteria" resultType="int">
+	SELECT COUNT(*) FROM INQUIRY_TB
+	WHERE CONTENTS LIKE '%'|| #{searchKeyword} ||'%'
+</select>
+
+<!-- 삭제 -->
+<delete id="delete" parameterType="InquiryVO"> 
+	DELETE FROM INQUIRY_TB
+    WHERE INID = #{inid} 
+</delete>
+
+<!-- 상세페이지  -->
+<select id="selectCt" parameterType="String" resultType="InquiryVO">
+   SELECT * FROM INQUIRY_TB
+   WHERE INID = #{inid}
+</select> 
+
+ <select id="selectAn" parameterType="String" resultType="InquiryAnswerVO">
+    SELECT *
+    FROM INQUIRY_ANSWER_TB
+    WHERE INID = #{inid}
+</select> 
+ 
+<!--업데이트  -->
+<update id="update" parameterType="InquiryVO">
+    UPDATE INQUIRY_TB
+    SET CONTENTS = #{contents}, WRITER = #{writer}
+    WHERE INID = #{inid}
+</update>
+
+</mapper>

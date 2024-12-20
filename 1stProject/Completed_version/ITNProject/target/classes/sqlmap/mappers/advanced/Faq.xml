@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itn.projectb.mapper.advanced.FaqMapper">
+<!-- 전체 조회 : -->
+<select id="selectCt2List" parameterType="Criteria" resultType="FaqVO">
+    SELECT * FROM FAQ_TB
+    WHERE TITLE LIKE '%' || #{searchKeyword} || '%' 
+    OR CONTENTS LIKE '%' || #{searchKeyword} || '%'
+    ORDER BY INSERT_TIME DESC 
+    OFFSET #{firstIndex} ROWS
+    FETCH NEXT #{recordCountPerPage} ROWS ONLY 
+</select>
+
+<!-- 페이징 -->
+<select id="selectCt2ListTotCnt" parameterType="Criteria" resultType="int">
+    SELECT COUNT(*) FROM FAQ_TB
+    WHERE TITLE LIKE '%' || #{searchKeyword} || '%' 
+    OR CONTENTS LIKE '%' || #{searchKeyword} || '%'
+</select>
+
+<!-- 상세보기페이지 -->
+<select id="selectCt2" parameterType="String" resultType="FaqVO">
+   SELECT *
+   FROM FAQ_TB
+   WHERE FAID = #{faid}  
+</select>
+
+<!-- 관리자 페이지 -->
+<select id="selectQnaList" parameterType="Criteria" resultType="FaqVO">
+	SELECT * FROM FAQ_TB
+    WHERE TITLE LIKE '%'|| #{searchKeyword} ||'%'
+    OFFSET #{firstIndex} ROWS
+    FETCH NEXT #{recordCountPerPage} ROWS ONLY		
+</select>
+
+<select id="selectQnaListTotCnt" parameterType="Criteria" resultType="int">		
+	SELECT COUNT(*) FROM FAQ_TB
+	WHERE TITLE LIKE '%'|| #{searchKeyword} ||'%'
+</select>
+
+<select id="selectQna" parameterType="String" resultType="FaqVO">
+	SELECT * FROM FAQ_TB
+	WHERE FAID = #{faid}
+</select>
+		
+<insert id="insert" parameterType="FaqVO">
+	INSERT INTO FAQ_TB(FAID, TITLE, CONTENTS, WRITER, INSERT_TIME) 
+	VALUES(CONCAT('FA',LPAD(TO_CHAR(FAQ_SEQ.NEXTVAL),3,'0')),
+		#{title}, #{contents}, #{writer}, 
+		TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS'))
+</insert>
+		
+<update id="update" parameterType="FaqVO">
+	UPDATE FAQ_TB
+	SET TITLE = #{title} 
+    ,CONTENTS  = #{contents}
+    ,UPDATE_TIME = TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS')
+	WHERE FAID = #{faid}	
+</update>
+
+<delete id="delete" parameterType="FaqVO">
+<!-- 	DELETE 테이블명 WHERE 조건절; -->
+		DELETE FAQ_TB
+		WHERE FAID = #{faid}
+</delete>
+
+
+
+
+
+
+
+</mapper>

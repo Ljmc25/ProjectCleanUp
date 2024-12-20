@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itn.projectb.mapper.advanced.InquiryAnswerMapper">
+
+<!-- 전체 조회: 답변 리스트 조회 -->
+<select id="selectCt4List" parameterType="Criteria" resultType="InquiryAnswerVO">  
+    SELECT * FROM 
+    INQUIRY_ANSWER_TB   
+</select>
+
+<!-- 답변 개수 세기 -->
+<select id="selectCt4ListTotCnt" parameterType="Criteria" resultType="int">
+    SELECT COUNT(*) 
+    FROM INQUIRY_ANSWER_TB
+    WHERE INID = #{inid}
+    AND (CONTENTS LIKE '%' || #{searchKeyword} || '%'
+    OR WRITER LIKE '%' || #{searchKeyword} || '%')
+</select>
+
+<insert id="insert" parameterType="InquiryAnswerVO">
+ INSERT INTO INQUIRY_ANSWER_TB (ANID, CONTENTS, INID, WRITER)
+VALUES (CONCAT('AN',LPAD(TO_CHAR(INQUIRY_ANSWER_SEQ.NEXTVAL),3,'0')), #{contents}, #{inid}, #{writer})
+</insert>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!-- Settings 설정 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+    
+    <!-- 별명 지정 -->
+    <typeAliases>
+    	<!-- 전자 정부 -->
+    	<typeAlias type="com.itn.projectb.vo.common.Criteria" alias="Criteria"/>
+    	<!-- 회원 정보 -->
+    	<typeAlias type="com.itn.projectb.vo.basic.MemberVO" alias="MemberVO"/>
+    	<!-- 영화 상품 -->
+    	<typeAlias type="com.itn.projectb.vo.basic.ProductVO" alias="ProductVO"/>
+    	<!-- 영화 감상평 -->  
+    	<typeAlias type="com.itn.projectb.vo.basic.ProductReviewVO" alias="ProductReviewVO"/>
+    	<!-- 공지 사항 -->   	
+    	<typeAlias type="com.itn.projectb.vo.advanced.NoticeVO" alias="NoticeVO"/>
+    	<!-- 자주 묻는 질문 -->   
+    	<typeAlias type="com.itn.projectb.vo.advanced.FaqVO" alias="FaqVO"/>
+    	<!-- 1:1 문의 -->  
+    	<typeAlias type="com.itn.projectb.vo.advanced.InquiryVO" alias="InquiryVO" />
+    	<!-- 1:1 문의 답변 -->  
+		<typeAlias type="com.itn.projectb.vo.advanced.InquiryAnswerVO" alias="InquiryAnswerVO" />
+		<!-- 상영목록 -->
+		<typeAlias type="com.itn.projectb.vo.basic.ScreeningVO" alias="ScreeningVO"/>
+		<!-- 예매목록 -->
+		<typeAlias type="com.itn.projectb.vo.basic.BookVO" alias="BookVO"/>
+		<!-- 결제목록 -->
+		<typeAlias type="com.itn.projectb.vo.basic.PaymentVO" alias="PaymentVO"/>
+		
+		<typeAlias type="com.itn.projectb.vo.basic.ExamVO" alias="ExamVO"/>
+		
+    	<typeAlias type="com.itn.projectb.vo.basic.ShowingVO" alias="ShowingVO"/>
+
+    </typeAliases>
+
+</configuration>
+
+
+
+
